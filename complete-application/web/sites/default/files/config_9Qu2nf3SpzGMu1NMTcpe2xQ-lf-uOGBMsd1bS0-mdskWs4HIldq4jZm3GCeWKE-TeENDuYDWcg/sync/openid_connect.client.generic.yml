@@ -1,0 +1,19 @@
+uuid: 9d119faa-4fae-448b-9bec-13f5853b9435
+langcode: en
+status: true
+dependencies: {  }
+id: generic
+label: generic
+plugin: generic
+settings:
+  client_id: cf1a2226-29eb-489e-b4d3-9f67792ab88c
+  client_secret: mvEVgpZuCta5OXazs3kXNyf41UyLgLPkxFayfym6Hl0
+  iss_allowed_domains: ''
+  issuer_url: ''
+  authorization_endpoint: 'http://localhost:9011/oauth2/authorize'
+  token_endpoint: 'http://localhost:9011/oauth2/token'
+  userinfo_endpoint: 'http://localhost:9011/oauth2/userinfo'
+  end_session_endpoint: ''
+  scopes:
+    - openid
+    - email

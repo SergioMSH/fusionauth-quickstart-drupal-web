@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for changebank module.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function changebank_block_info() {
+    $blocks = [];
+  
+    $blocks['user_email_block'] = [
+      'info' => t('User Email Block'),
+      'cache' => DRUPAL_CACHE_PER_ROLE,
+    ];
+
+    $blocks['user_login_logout_block'] = [
+      'info' => t('User Login Logout Block'),
+      'cache' => DRUPAL_CACHE_PER_ROLE,
+    ];
+  
+    return $blocks;
+  }
