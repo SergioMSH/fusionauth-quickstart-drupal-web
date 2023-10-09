@@ -1,9 +1,5 @@
 {
     "variables": {
-        "allowedOrigin": "http://dev.changebank.com",
-        "authorizedRedirectURL": "http://dev.changebank.com/openid-connect/generic",
-        "authorizedOriginURL": "",
-        "logoutURL": "",
         "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
         "apiKey": "this_really_should_be_a_long_random_alphanumeric_value_but_this_still_works",
         "asymmetricKeyId": "#{UUID()}",
@@ -46,7 +42,7 @@
                             "POST",
                             "OPTIONS"
                         ],
-                        "allowedOrigins": [ "#{allowedOrigin}" ],
+                        "allowedOrigins": [ "http://dev.changebank.com" ],
                         "debug": false,
                         "enabled": true,
                         "preflightMaxAgeInSeconds": 0
@@ -76,7 +72,7 @@
             "body": {
                 "tenant": {
                     "issuer": "http://localhost:9011"
-                } 
+                }
             }
         },
         {
@@ -87,10 +83,10 @@
               "application": {
                 "name": "Example app",
                 "oauthConfiguration" : {
-                    "authorizedRedirectURLs": ["#{authorizedRedirectURL}"],
-                    "authorizedOriginURLs": ["#{authorizedOriginURL}"],
+                    "authorizedRedirectURLs": ["http://dev.changebank.com/openid-connect/generic"],
+                    "authorizedOriginURLs": ["http://dev.changebank.com"],
                     "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
-                    "logoutURL": "#{logoutURL}",
+                    "logoutURL": "http://dev.changebank.com",
                     "enabledGrants": ["authorization_code","refresh_token"],
                     "debug": true,
                     "generateRefreshTokens": true,
@@ -120,6 +116,34 @@
                 },
                 "registration": {
                     "applicationId": "#{applicationId}"
+                }
+            }
+        },
+        {
+            "method": "POST",
+            "url": "/api/theme/#{newThemeId}",
+            "body": {
+                "sourceThemeId": "75a068fd-e94b-451a-9aeb-3ddb9a3b5987",
+                "theme": {
+                    "name": "Changebank theme"
+                }
+            }
+        },
+        {
+            "method": "PATCH",
+            "url": "/api/theme/#{newThemeId}",
+            "body": {
+                "theme": {
+                    "stylesheet": "@{css/styles.css}"
+                }
+            }
+        },
+        {
+            "method": "PATCH",
+            "url": "/api/tenant/#{defaultTenantId}",
+            "body": {
+                "tenant": {
+                    "themeId": "#{newThemeId}"
                 }
             }
         }
