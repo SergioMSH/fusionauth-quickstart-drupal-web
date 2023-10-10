@@ -47,7 +47,7 @@ body {
 }
 
 #main-wrapper {
-    height: calc(100vh - 204px);
+    height: calc(100vh - 148px);
 }
 
 .navbar {
