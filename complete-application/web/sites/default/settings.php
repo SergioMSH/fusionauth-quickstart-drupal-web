@@ -861,12 +861,12 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'changebank',
-  'username' => 'root',
-  'password' => '',
+  'database' => 'drupaldb',
+  'username' => 'drupal',
+  'password' => 'verybadpassword',
   'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
+  'host' => 'fusionauth-quickstart-php-drupal-web-db2-1',
+  'port' => '3307',
   'isolation_level' => 'READ COMMITTED',
   'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
   'driver' => 'mysql',
