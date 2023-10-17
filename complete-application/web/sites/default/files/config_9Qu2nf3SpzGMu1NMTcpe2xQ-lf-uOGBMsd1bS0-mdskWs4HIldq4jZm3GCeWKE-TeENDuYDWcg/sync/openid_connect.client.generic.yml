@@ -6,10 +6,10 @@ id: generic
 label: generic
 plugin: generic
 settings:
-  client_id: cf1a2226-29eb-489e-b4d3-9f67792ab88c
-  client_secret: mvEVgpZuCta5OXazs3kXNyf41UyLgLPkxFayfym6Hl0
+  client_id: e9fdb985-9173-4e01-9d73-ac2d60d1dc8e
+  client_secret: super-secret-secret-that-should-be-regenerated-for-production
   iss_allowed_domains: ''
-  issuer_url: ''
+  issuer_url: 'http://localhost:9011'
   authorization_endpoint: 'http://localhost:9011/oauth2/authorize'
   token_endpoint: 'http://localhost:9011/oauth2/token'
   userinfo_endpoint: 'http://localhost:9011/oauth2/userinfo'
