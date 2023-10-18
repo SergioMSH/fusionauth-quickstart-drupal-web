@@ -73,6 +73,8 @@ services:
 
   fusionauth:
     image: fusionauth/fusionauth-app:latest
+    extra_hosts:
+      - host.docker.internal:host-gateway
     depends_on:
       db:
         condition: service_healthy

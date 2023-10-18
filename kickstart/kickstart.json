@@ -71,7 +71,7 @@
             "url": "/api/tenant/#{defaultTenantId}",
             "body": {
                 "tenant": {
-                    "issuer": "http://localhost:9011"
+                    "issuer": "http://host.docker.internal:9011"
                 }
             }
         },
