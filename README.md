@@ -65,16 +65,7 @@ You can log into the [FusionAuth admin UI](http://localhost:9011/admin) and look
 
 The `complete-application` directory contains the Drupal app configured to authenticate with locally running FusionAuth.
 
-If the `fusionauth-quickstart-php-drupal-web-web-1` and `fusionauth-quickstart-php-drupal-web-db2-1` containers are running then it means the Drupal application is up, but we need to set a host name for it and import the supplied database.
-
-#### Set a host name
-
-Edit your operating system's host file and add the following entry:
-
-```
-127.0.0.1 dev.changebank.com
-```
-> **NOTE**: In windows, the host file is located at `C:\Windows\System32\drivers\etc\hosts` and at `/private/etc/hosts` on MacOS.
+If the `fusionauth-quickstart-php-drupal-web-web-1` and `fusionauth-quickstart-php-drupal-web-db2-1` containers are running then it means the Drupal application is up. Let's go ahead and import the database now.
 
 #### Import the database
 
@@ -86,7 +77,7 @@ First we want to copy the database dump file located at ./db-backups into the db
 docker cp ./db-backups/changebank.sql fusionauth-quickstart-php-drupal-web-db2-1:/changebank.sql
 ```
 
-Next, we want to import the database dump file into the database. Run the following command to import the database:
+Next, we want to import the dump file into the database. Run the following command to import the database:
 
 ```
 docker exec -i fusionauth-quickstart-php-drupal-web-db2-1 sh -c 'mysql -u drupal -pverybadpassword drupaldb < /changebank.sql'
@@ -100,9 +91,9 @@ docker-compose restart
 
 ### Accessing the Drupal App
 
-You can now access the Drupal app by opening a browser and navigating to http://dev.changebank.com.
+You can now access the Drupal app by opening a browser and navigating to http://localhost.
 
-To login to the application with FusionAuth, click the Login button and then on the user login page located at http://dev.changebank.com/user/login you can click on the button labeled `Login with generic`.
+To login to the application with FusionAuth, click the Login button and then on the user login page located at http://localhost/user/login you can click on the button labeled `Login with generic`.
 
 That will redirect you to the FusionAuth login page where you can login with the following credentials:
 
@@ -114,9 +105,9 @@ OR
 * Username: `richard@example.com`
 * Password: `password`
 
-Once you login, you will be redirected back to the Drupal app's account page (http://dev.changebank.com/account) where you will see your username in the top right hand corner along with the logout button.
+Once you login, you will be redirected back to the Drupal app's account page (http://localhost/account) where you will see your username in the top right hand corner along with the logout button.
 
-In the main navigation menu, you will see a link to the makechange page (http://dev.changebank.com/makechange) where you can navigate to and "make change" with the form located there and the account page will keep track of the last value you entered.
+In the main navigation menu, you will see a link to the makechange page (http://localhost/makechange) where you can navigate to and "make change" with the form located there and the account page will keep track of the last value you entered.
 
 You're currently logged in as a user with the role of `authenticated user` which means you can only access the `account`, `makechange` and `home` pages.
 
@@ -144,6 +135,37 @@ $databases['default']['default'] = array (
 );
 ```
 
+### Drush
+
+The command-line tool, Drush, is installed in the Drupal container and you can make use of it to perform various tasks.
+
+One such task is to import or export config for the database. To do so, open a bash terminal in the root of the `fusionauth-quickstart-php-drupal-web` directory and run the following command to enter the Drupal container:
+
+```
+docker exec -it fusionauth-quickstart-php-drupal-web-web-1 bash
+```
+
+Once inside the container, you can run the following command to export the config:
+
+```
+vendor/bin/drush cex
+```
+
+Or to import config:
+  
+```
+vendor/bin/drush cim
+```
+
+Other popular commands include:
+
+- `vendor/bin/drush cr`: Clears the cache,
+- `vendor/bin/drush pm-enable <module name>`: Enables a module,
+- `vendor/bin/drush updb`: Updates the database,
+- `vendor/bin/drush uli`: Generates a one-time login link for a user,
+- and many more.
+
+For a full list of commands, visit https://www.drush.org/12.2.0/commands/all/.
 
 
 ### Further Information
@@ -154,4 +176,19 @@ Visit https://fusionauth.io/quickstarts/quickstart-php-drupal-web for a step by 
 
 * I get `This site can’t be reached  localhost refused to connect.` when I click the Login button
 
-Ensure FusionAuth is running in the Docker container.  You should be able to login as the admin user, `admin@example.com` with the password of `password` at http://localhost:9011/admin
+Ensure FusionAuth is running in the Docker container.  You should be able to login as the admin user, `admin@example.com` with the password of `password` at http://localhost:9011/admin.
+
+* I get an error `/usr/bin/env: 'php\r': No such file or directory` when trying to run drush commands.
+
+Incorrect line endings are known to cause this issue. To fix the issue, you need to convert the line endings of the file from Windows to Unix. this can be done by use of the `dos2unix` command. You can install `dos2unix` by running the following command inside the Drupal container:
+
+```
+apt-get update && apt-get install -y dos2unix
+```
+
+Once installed, you can convert the line endings of the file by running the following command inside the Drupal container:
+
+```
+dos2unix /opt/drupal/vendor/bin/drush
+```
+
