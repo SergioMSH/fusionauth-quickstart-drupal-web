@@ -41,7 +41,7 @@ class ChangebankForm extends FormBase {
       '#title' => $this->t('Amount in USD: $'),
       '#required' => TRUE,
       '#min' => 1,
-      '#step' => 1.0,
+      '#step' => 0.01,
     ];
     $form['submit'] = [
       '#type' => 'submit',
@@ -56,44 +56,45 @@ class ChangebankForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $amount = $form_state->getValue('amount');
-    $quarters = 0;
-    $dimes = 0;
-    $nickels = 0;
-    $pennies = 0;
-
-    // Calculate the number of quarters, dimes, nickels, and pennies for every 100 cents (1 dollar).
-    $quarters_per_dollar = 2;
-    $dimes_per_dollar = 3;
-    $nickels_per_dollar = 3;
-    $pennies_per_dollar = 5;
-
-    $quarters += floor($amount) * $quarters_per_dollar;
-    $dimes += floor($amount) * $dimes_per_dollar;
-    $nickels += floor($amount) * $nickels_per_dollar;
-    $pennies += floor($amount) * $pennies_per_dollar;
-
-    $amount_in_cents = $amount * 100;
-    $amount_in_cents %= 100;
-
-    $quarters += floor($amount_in_cents / 25);
+  
+    $amount_in_cents = round($amount * 100);
+  
+    $quarters = floor($amount_in_cents / 25);
     $amount_in_cents %= 25;
-    $dimes += floor($amount_in_cents / 10);
+  
+    $dimes = floor($amount_in_cents / 10);
     $amount_in_cents %= 10;
-    $nickels += floor($amount_in_cents / 5);
+  
+    $nickels = floor($amount_in_cents / 5);
     $amount_in_cents %= 5;
-    $pennies += $amount_in_cents;
-
-    $result = $this->t('We can make change for $@dollars with @dimes dimes, @nickels nickels and @pennies pennies!', [
+  
+    $pennies = $amount_in_cents;
+  
+    $coins = [];
+    if ($quarters > 0) {
+      $coins[] = "@quarters quarters";
+    }
+    if ($dimes > 0) {
+      $coins[] = "@dimes dimes";
+    }
+    if ($nickels > 0) {
+      $coins[] = "@nickels nickels";
+    }
+    if ($pennies > 0) {
+      $coins[] = "@pennies pennies";
+    }
+  
+    $result = $this->t('We can make change for $@dollars with ' . implode(', ', $coins) . '!', [
       '@dollars' => $amount,
       '@quarters' => $quarters,
       '@dimes' => $dimes,
       '@nickels' => $nickels,
       '@pennies' => $pennies,
     ]);
-
+  
     $form_state->setRebuild(TRUE);
     $form_state->set('result', $result);
-
+  
     \Drupal::state()->set('changebank_form_value', $result);
   }
 
