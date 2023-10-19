@@ -1,5 +1,9 @@
 {
     "variables": {
+        "allowedOrigin": "http://localhost",
+        "authorizedRedirectURL": "http://localhost/openid-connect/generic",
+        "authorizedOriginURL": "http://localhost",
+        "logoutURL": "http://localhost",
         "applicationId": "e9fdb985-9173-4e01-9d73-ac2d60d1dc8e",
         "apiKey": "this_really_should_be_a_long_random_alphanumeric_value_but_this_still_works",
         "asymmetricKeyId": "#{UUID()}",
@@ -42,7 +46,7 @@
                             "POST",
                             "OPTIONS"
                         ],
-                        "allowedOrigins": [ "http://dev.changebank.com" ],
+                        "allowedOrigins": [ "#{allowedOrigin}" ],
                         "debug": false,
                         "enabled": true,
                         "preflightMaxAgeInSeconds": 0
@@ -72,7 +76,7 @@
             "body": {
                 "tenant": {
                     "issuer": "http://host.docker.internal:9011"
-                }
+                } 
             }
         },
         {
@@ -83,10 +87,10 @@
               "application": {
                 "name": "Example app",
                 "oauthConfiguration" : {
-                    "authorizedRedirectURLs": ["http://dev.changebank.com/openid-connect/generic"],
-                    "authorizedOriginURLs": ["http://dev.changebank.com"],
+                    "authorizedRedirectURLs": ["#{authorizedRedirectURL}"],
+                    "authorizedOriginURLs": ["#{authorizedOriginURL}"],
                     "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
-                    "logoutURL": "http://dev.changebank.com",
+                    "logoutURL": "#{logoutURL}",
                     "enabledGrants": ["authorization_code","refresh_token"],
                     "debug": true,
                     "generateRefreshTokens": true,
@@ -125,8 +129,8 @@
             "body": {
                 "sourceThemeId": "75a068fd-e94b-451a-9aeb-3ddb9a3b5987",
                 "theme": {
-                    "name": "Changebank theme"
-                }
+                    "name": "React theme"
+                } 
             }
         },
         {
@@ -135,7 +139,7 @@
             "body": {
                 "theme": {
                     "stylesheet": "@{css/styles.css}"
-                }
+                } 
             }
         },
         {
@@ -144,7 +148,7 @@
             "body": {
                 "tenant": {
                     "themeId": "#{newThemeId}"
-                }
+                } 
             }
         }
     ]
