@@ -157,6 +157,10 @@ Or to import config:
 vendor/bin/drush cim
 ```
 
+> **NOTE**: Drupal's config directory is usually located at `web/sites/default/files/config_some_hash/sync/`.
+> 
+> You can do manual imports by copying the code in a particular .yml file the `config/sync` directory, visiting the import page at http://localhost/admin/config/development/configuration/single/import, selecting the corresponding config type and pasting the code into the text area.
+
 Other popular commands include:
 
 - `vendor/bin/drush cr`: Clears the cache,
